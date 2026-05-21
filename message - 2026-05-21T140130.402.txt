@@ -1,0 +1,859 @@
+-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")-- Serviços
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+-- Player
+local LocalPlayer = Players.LocalPlayer
+local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+
+-- Tools
+local Bat = Character:FindFirstChild("Bat")
+    or LocalPlayer.Backpack:FindFirstChild("Bat")
+
+local QuantumCloner = Character:FindFirstChild("Quantum Cloner")
+    or LocalPlayer.Backpack:FindFirstChild("Quantum Cloner")
