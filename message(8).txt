@@ -1,0 +1,1377 @@
+  repeat task.wait() until game.Players.LocalPlayer
+  repeat task.wait() until game:IsLoaded()
+
+wait(1)
+
+local SERVICES = {
+    Players           = game:GetService("Players"),
+    RunService        = game:GetService("RunService"),
+    TweenService      = game:GetService("TweenService"),
+    ReplicatedStorage = game:GetService("ReplicatedStorage"),
+    UserInputService  = game:GetService("UserInputService"),
+}
+
+local CONFIG = {
+    -- Anti-kick
+    SIMULATION_RADIUS_VALUE         = 1e9,
+
+    -- Spawn / Spam
+    SPAM_TOTAL_DURATION             = 3.05,
+    BAT_CYCLES_PER_FRAME            = 14,
+    USE_ACTIVATE_INSTEAD_OF_REMOTE  = false,
+    PREFER_REMOTE_NAME              = "UseItem",
+
+    -- Clone
+    CLONE_APPEAR_GRACE_PERIOD       = 0.3,
+    CLONE_TARGET_Y_OFFSET           = 2.0,
+    TARGET_REFRESH_INTERVAL         = 0.15,
+    TARGET_STALE_GRACE_PERIOD       = 0.75,
+    TARGET_REUSE_DISTANCE           = 12,
+    ROOT_WAIT_TIMEOUT               = 10,
+    BEST_PET_SEARCH_OWN_PLOT_SKIP   = true,
+
+    -- Float
+    FLOAT_Y_OFFSET                  = -3,
+    FLOAT_VELOCITY_UP               = 14,
+    FLOAT_Y_MAX_WORLD               = 40,
+
+    -- Auto TP
+    AUTOCLONE_FILE          = "autoclone_state.txt",
+    AUTOCLONE_RESPAWN_DELAY = 2.0,
+
+    -- Clone Aura
+    AURA_RADIUS             = 5,
+    AURA_SPEED              = 10,   -- rotações completas por segundo
+
+    -- GUI
+    PANEL_W     = 220,
+    PANEL_H     = 348,
+    CORNER      = 14,
+    BTN_H       = 48,
+    BTN_GAP     = 8,
+    PAD         = 14,
+}
+
+local STATE = {
+    spamRunning     = false,
+    spamConn        = nil,
+    spamStart       = 0,
+
+    cloneModel      = nil,
+    cloneConn       = nil,
+    tpConn          = nil,
+
+    floatActive     = false,
+    teleportActive  = false,
+    autoTpActive    = false,
+    autoTpLoopConn  = nil,
+
+    auraActive      = false,
+    auraAngle       = 0,
+    auraConn        = nil,
+    auraRadius      = 5,
+
+    targetCache          = { pos = nil, at = 0 },
+    targetWorkerRunning  = false,
+
+    syncModule      = nil,
+    animalsModule   = nil,
+    channelCache    = {},
+}
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- PLAYER / BACKPACK
+-- ─────────────────────────────────────────────────────────────────────────────
+task.spawn(function()
+    repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
+        -- Animação e som ao iniciar
+        local TweenService = game:GetService("TweenService")
+        local player = game.Players.LocalPlayer
+        local gui = Instance.new("ScreenGui")
+        gui.Parent = player.PlayerGui
+        gui.IgnoreGuiInset = true
+
+        local som = Instance.new("Sound")
+        som.Parent = game:GetService("SoundService")
+        som.SoundId = "rbxassetid://5024809199"
+        som.PlaybackSpeed = 1.2
+        som.Volume = 1
+        som.TimePosition = 1.6
+        som:Play()
+
+        local overlay = Instance.new("Frame")
+        overlay.Size = UDim2.new(1,0,1,0)
+        overlay.Position = UDim2.new(0,0,0,0)
+        overlay.BackgroundColor3 = Color3.new(0,0,0)
+        overlay.BackgroundTransparency = 0.4
+        overlay.BorderSizePixel = 0
+        overlay.ZIndex = 1
+        overlay.Parent = gui
+
+        local smoke = Instance.new("ImageLabel")
+        smoke.Parent = gui
+        smoke.BackgroundTransparency = 1
+        smoke.AnchorPoint = Vector2.new(0.5, 0.5)
+        smoke.Position = UDim2.new(0.5, 0, 0.58, 0)
+        smoke.Size = UDim2.new(0.5, 0, 0.18, 0)
+        smoke.Image = "rbxassetid://7712212244"
+        smoke.ImageColor3 = Color3.fromRGB(255, 210, 80)
+        smoke.ImageTransparency = 0.35
+        smoke.ZIndex = 2.5
+        local smokeCorner = Instance.new("UICorner")
+        smokeCorner.CornerRadius = UDim.new(1, 0)
+        smokeCorner.Parent = smoke
+        task.spawn(function()
+            while smoke and smoke.Parent do
+                smoke.Rotation += 0.4
+                task.wait()
+            end
+        end)
+
+        local bgImage = Instance.new("ImageLabel")
+        bgImage.Parent = gui
+        bgImage.BackgroundTransparency = 1
+        bgImage.AnchorPoint = Vector2.new(0.5, 0.5)
+        bgImage.Position = UDim2.new(0.5, 0, 0.5, 0)
+        bgImage.Size = UDim2.new(0.4, 0, 0.4, 0)
+        bgImage.ScaleType = Enum.ScaleType.Fit
+        bgImage.ImageTransparency = 0
+        bgImage.ZIndex = 2
+        bgImage.Image = "rbxassetid://120779565252904"
+        local corner = Instance.new("UICorner")
+        corner.Parent = bgImage
+        corner.CornerRadius = UDim.new(1, 0)
+
+        local text = Instance.new("TextLabel")
+        text.Parent = gui
+        text.ZIndex = 3
+        text.RichText = true
+        text.TextScaled = true
+        text.Font = Enum.Font.GothamBlack
+        text.BackgroundTransparency = 1
+        text.BorderSizePixel = 0
+        text.TextStrokeTransparency = 0
+        text.TextStrokeColor3 = Color3.new(0,0,0)
+        text.Text = "<font color='#FFD700'>STAR</font> <font color='#ffffff'>LIGHT</font>"
+        text.AnchorPoint = Vector2.new(0.5,0.5)
+        text.Position = UDim2.new(0.5,0,0.5,0)
+        -- Começa pequeno
+        text.Size = UDim2.new(0.01,0,0.01,0)
+
+        -- bgImage também começa pequeno
+        bgImage.Size = UDim2.new(0.01,0,0.01,0)
+
+        -- Animação de entrada: cresce até o tamanho normal
+        TweenService:Create(
+            text,
+            TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            {Size = UDim2.new(0.28,0,0.09,0)}
+        ):Play()
+        TweenService:Create(
+            bgImage,
+            TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            {Size = UDim2.new(0.4,0,0.4,0)}
+        ):Play()
+
+        local shaking = true
+        task.spawn(function()
+            while shaking do
+                local t1 = TweenService:Create(
+                    text,
+                    TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut),
+                    {Rotation = 6}
+                )
+                local t1b = TweenService:Create(
+                    bgImage,
+                    TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut),
+                    {Rotation = 6}
+                )
+                local t2 = TweenService:Create(
+                    text,
+                    TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut),
+                    {Rotation = -6}
+                )
+                local t2b = TweenService:Create(
+                    bgImage,
+                    TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut),
+                    {Rotation = -6}
+                )
+                t1:Play(); t1b:Play()
+                t1.Completed:Wait()
+                t2:Play(); t2b:Play()
+                t2.Completed:Wait()
+            end
+            text.Rotation = 0
+            bgImage.Rotation = 0
+        end)
+        task.wait(2)
+        shaking = false
+        -- Animação de saída: encolher e sumir
+        TweenService:Create(
+            text,
+            TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            {
+                Size = UDim2.new(0.01,0,0.01,0),
+                TextTransparency = 1
+            }
+        ):Play()
+        TweenService:Create(
+            bgImage,
+            TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+            {
+                Size = UDim2.new(0.01,0,0.01,0),
+                ImageTransparency = 1
+            }
+        ):Play()
+        TweenService:Create(
+            overlay,
+            TweenInfo.new(0.6),
+            {BackgroundTransparency = 1}
+        ):Play()
+end)
+
+local player   = SERVICES.Players.LocalPlayer
+local backpack = player:WaitForChild("Backpack")
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- ANTI-KICK V3 (SimulationRadius + PhysicsRepRootPart + BasePart connector)
+-- ─────────────────────────────────────────────────────────────────────────────
+
+-- Camada 1: SimulationRadius / MaxSimulationRadius / setsimulationradius
+SERVICES.RunService.Heartbeat:Connect(function()
+    local char = player.Character
+    if not char then return end
+    pcall(sethiddenproperty, player, "SimulationRadius",    CONFIG.SIMULATION_RADIUS_VALUE)
+    pcall(sethiddenproperty, player, "MaxSimulationRadius", CONFIG.SIMULATION_RADIUS_VALUE)
+    pcall(setsimulationradius, CONFIG.SIMULATION_RADIUS_VALUE, CONFIG.SIMULATION_RADIUS_VALUE)
+end)
+
+-- Camada 2: PhysicsRepRootPart → nil (desconecta âncora de física replicada)
+task.spawn(function()
+    while true do
+        SERVICES.RunService.Heartbeat:Wait()
+        local char = player.Character
+        if not char then continue end
+        local hum  = char:FindFirstChildOfClass("Humanoid")
+        local root = hum and hum.RootPart
+        if root then
+            pcall(sethiddenproperty, root, "PhysicsRepRootPart", nil)
+        end
+    end
+end)
+
+-- Camada 3: BasePart connector (Failedmite57926 method)
+local function connectPartToPart(basePart: BasePart, connecterPart: BasePart)
+    if basePart:IsGrounded() then return end
+
+    local origMaterial       = connecterPart.Material
+    local origAnchored       = connecterPart.Anchored
+    local origCanCollide     = connecterPart.CanCollide
+    local origConPhysics     = connecterPart.CustomPhysicalProperties
+    local origConParent      = connecterPart.Parent
+    local origConCFrame      = connecterPart.CFrame
+    local origBaseParent     = basePart.Parent
+    local origBaseCanCollide = basePart.CanCollide
+    local origBaseName       = basePart.Name
+    local origBasePhysics    = basePart.CustomPhysicalProperties
+
+    local holderModel    = Instance.new("Model", workspace)
+    local holderHumanoid = Instance.new("Humanoid", holderModel)
+    holderHumanoid.RequiresNeck        = false
+    holderHumanoid.BreakJointsOnDeath  = false
+    holderHumanoid.HipHeight           = 2
+
+    for _, state in ipairs(Enum.HumanoidStateType:GetEnumItems()) do
+        if state ~= Enum.HumanoidStateType.None and state ~= Enum.HumanoidStateType.Running then
+            holderHumanoid:SetStateEnabled(state, false)
+        end
+    end
+    holderHumanoid:ChangeState(Enum.HumanoidStateType.Running)
+
+    connecterPart.Material               = Enum.Material.ClayRoofTiles
+    connecterPart.Parent                 = workspace
+    connecterPart.CustomPhysicalProperties = PhysicalProperties.new(100, 0, 0)
+    connecterPart.Anchored               = false
+    connecterPart.CanCollide             = true
+
+    basePart.CanCollide               = false
+    basePart.Name                     = "HumanoidRootPart"
+    basePart.CustomPhysicalProperties = PhysicalProperties.new(0.001, 0, 0)
+    basePart.Parent                   = holderModel
+
+    repeat
+        holderHumanoid:ChangeState(Enum.HumanoidStateType.Running)
+        connecterPart.CFrame                    = CFrame.new(origConCFrame.Position)
+        connecterPart.AssemblyLinearVelocity    = Vector3.zero
+        connecterPart.AssemblyAngularVelocity   = Vector3.zero
+        basePart.CFrame                         = connecterPart.CFrame * CFrame.new(0, 2, 0)
+        basePart.AssemblyLinearVelocity         = Vector3.zero
+        basePart.AssemblyAngularVelocity        = Vector3.zero
+        SERVICES.RunService.Heartbeat:Wait()
+    until holderHumanoid.FloorMaterial == connecterPart.Material
+
+    holderHumanoid:Destroy()
+
+    basePart.Parent                   = origBaseParent
+    basePart.Name                     = origBaseName
+    basePart.CustomPhysicalProperties = origBasePhysics
+    basePart.CanCollide               = origBaseCanCollide
+
+    holderModel:Destroy()
+
+    connecterPart.Parent                 = origConParent
+    connecterPart.Anchored               = origAnchored
+    connecterPart.Material               = origMaterial
+    connecterPart.CustomPhysicalProperties = origConPhysics
+    connecterPart.CanCollide             = origCanCollide
+    connecterPart.CFrame                 = origConCFrame
+end
+
+-- Dispara a camada 3 quando o personagem spawna
+task.spawn(function()
+    local function applyConnector(char)
+        task.wait(1)
+        local hum  = char:FindFirstChildOfClass("Humanoid")
+        local root = hum and hum.RootPart
+        if not root or root:IsGrounded() then return end
+        local anchor = Instance.new("Part")
+        anchor.Size      = Vector3.new(4, 1, 4)
+        anchor.Anchored  = false
+        anchor.CanCollide = true
+        anchor.CFrame    = root.CFrame * CFrame.new(0, -3, 0)
+        anchor.Parent    = workspace
+        pcall(connectPartToPart, root, anchor)
+        task.delay(15, function() pcall(function() anchor:Destroy() end) end)
+    end
+
+    if player.Character then
+        task.spawn(applyConnector, player.Character)
+    end
+    player.CharacterAdded:Connect(function(char)
+        task.spawn(applyConnector, char)
+    end)
+end)
+-- ─────────────────────────────────────────────────────────────────────────────
+-- SAVE / LOAD STATE
+-- ─────────────────────────────────────────────────────────────────────────────
+local function saveState()
+    pcall(function()
+        writefile(CONFIG.AUTOCLONE_FILE, STATE.autoTpActive and "1" or "0")
+    end)
+end
+
+local function loadState()
+    local ok, data = pcall(readfile, CONFIG.AUTOCLONE_FILE)
+    if ok and data then
+        STATE.autoTpActive = (data:match("^%s*(.-)%s*$") == "1")
+    end
+end
+
+loadState()
+
+local function getTool(char, name)
+    return backpack:FindFirstChild(name) or (char and char:FindFirstChild(name))
+end
+
+local function activateTool(tool)
+    if CONFIG.USE_ACTIVATE_INSTEAD_OF_REMOTE then tool:Activate() return end
+    local remote = tool:FindFirstChild(CONFIG.PREFER_REMOTE_NAME)
+    if remote and remote:IsA("RemoteEvent") then
+        remote:FireServer()
+    elseif remote and remote:IsA("RemoteFunction") then
+        pcall(remote.InvokeServer, remote)
+    else
+        tool:Activate()
+    end
+end
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- MÓDULOS
+-- ─────────────────────────────────────────────────────────────────────────────
+local function getModules()
+    if STATE.syncModule and STATE.animalsModule then
+        return STATE.syncModule, STATE.animalsModule
+    end
+    if _G.MorangueteHubShared and _G.MorangueteHubShared.getModules then
+        STATE.syncModule, STATE.animalsModule = _G.MorangueteHubShared.getModules()
+        return STATE.syncModule, STATE.animalsModule
+    end
+    local pkgs   = SERVICES.ReplicatedStorage:FindFirstChild("Packages")
+    local shared = SERVICES.ReplicatedStorage:FindFirstChild("Shared")
+    if pkgs   then local s = pkgs:FindFirstChild("Synchronizer");  if s then STATE.syncModule    = require(s) end end
+    if shared then local a = shared:FindFirstChild("Animals");      if a then STATE.animalsModule = require(a) end end
+    return STATE.syncModule, STATE.animalsModule
+end
+
+local function getChannel(name)
+    local cache = STATE.channelCache
+    if cache[name] and cache[name].Parent then return cache[name] end
+    cache[name] = nil
+    local sync = getModules()
+    if not sync then return nil end
+    local all = sync:GetAllChannels()
+    local ch  = (all and all[name]) or sync:Create(nil, name, nil)
+    if ch then cache[name] = ch end
+    return ch
+end
+
+local function waitChannel(name, timeout)
+    local ch = getChannel(name)
+    if ch then return ch end
+    local t = tick()
+    repeat task.wait(0.1); ch = getChannel(name) until ch or tick() - t > (timeout or 10)
+    return ch
+end
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- BUSCA DE MELHOR PET
+-- ─────────────────────────────────────────────────────────────────────────────
+local function parseGen(v)
+    if type(v) == "number" then return v end
+    if type(v) ~= "string" then return 0 end
+    v = v:gsub("%s+", ""):upper()
+    local n, s = v:match("([%d%.]+)([KMBTQ]?)")
+    if not n then return 0 end
+    local mult = ({ K=1e3, M=1e6, B=1e9, T=1e12, Q=1e15 })[s] or 1
+    return (tonumber(n) or 0) * mult
+end
+
+local function getMyPlotName()
+    local plots = workspace:FindFirstChild("Plots")
+    if not plots then return nil end
+    for _, plot in ipairs(plots:GetChildren()) do
+        local sign  = plot:FindFirstChild("PlotSign")
+        local label = sign and sign:FindFirstChildWhichIsA("TextLabel", true)
+        if label then
+            local t = label.Text:lower()
+            if t:find(player.DisplayName:lower()) or t:find(player.Name:lower()) then
+                return plot.Name
+            end
+        end
+    end
+end
+
+local function getPartPos(model)
+    if not model then return nil end
+    local p = model.PrimaryPart or model:FindFirstChildWhichIsA("BasePart")
+    return p and p.Position
+end
+
+local function findBestPetPosition()
+    local sync, animals = getModules()
+    if not sync or not animals then return nil end
+
+    local steal = _G.MorangueteHubSelectedBrainrot
+    if not steal and _G.MorangueteHubStealNearest then
+        local t = _G.MorangueteHubStealNearest.currentBestPet
+        if type(t) == "table" and t.PlotName and t.PodiumID then steal = t end
+    end
+
+    if steal and steal.PlotName and steal.PodiumID then
+        local plots = workspace:FindFirstChild("Plots")
+        local plot  = plots and plots:FindFirstChild(steal.PlotName)
+        local ch    = plot and waitChannel(plot.Name)
+        if ch then
+            local entry = (ch:Get("AnimalList") or {})[steal.PodiumID]
+            if type(entry) == "table" and not entry.Machine and entry.Index then
+                return getPartPos(plot:FindFirstChild(entry.Index))
+            end
+        end
+        return nil
+    end
+
+    local plots  = workspace:FindFirstChild("Plots")
+    if not plots then return nil end
+    local myPlot = CONFIG.BEST_PET_SEARCH_OWN_PLOT_SKIP and getMyPlotName()
+    local minGen = parseGen((_G.MorangueteHubConfig and _G.MorangueteHubConfig.Get
+        and _G.MorangueteHubConfig.Get("esp.esp brainrots.min gen", nil)) or 0)
+    local bestGen, bestPos = -1e9, nil
+
+    for _, plot in ipairs(plots:GetChildren()) do
+        if plot.Name == myPlot or not plot:GetAttribute("Tier") then continue end
+        local ch = waitChannel(plot.Name)
+        if not ch then continue end
+        for _, entry in pairs(ch:Get("AnimalList") or {}) do
+            if type(entry) == "table" and not entry.Machine and entry.Index then
+                local gen = animals:GetGeneration(entry.Index, entry.Mutation, entry.Traits)
+                if gen >= minGen and gen > bestGen then
+                    local pos = getPartPos(plot:FindFirstChild(entry.Index))
+                    if pos then bestGen, bestPos = gen, pos end
+                end
+            end
+        end
+    end
+    return bestPos
+end
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- TARGET WORKER
+-- ─────────────────────────────────────────────────────────────────────────────
+local function startTargetWorker()
+    if STATE.targetWorkerRunning then return end
+    STATE.targetWorkerRunning = true
+    task.spawn(function()
+        while STATE.targetWorkerRunning do
+            local pos = findBestPetPosition()
+            if pos then
+                STATE.targetCache.pos = pos
+                STATE.targetCache.at  = tick()
+            end
+            task.wait(CONFIG.TARGET_REFRESH_INTERVAL)
+        end
+    end)
+end
+
+local function stopTargetWorker()
+    STATE.targetWorkerRunning = false
+end
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- MOVIMENTO DO CLONE
+-- ─────────────────────────────────────────────────────────────────────────────
+local function moveCloneToTarget(cloneModel, targetPos)
+    if not cloneModel or not targetPos then return end
+    local hrp = cloneModel:FindFirstChild("HumanoidRootPart")
+    if not hrp then return end
+    pcall(function()
+        cloneModel:PivotTo(
+            CFrame.new(targetPos + Vector3.new(0, CONFIG.CLONE_TARGET_Y_OFFSET, 0))
+            * cloneModel:GetPivot().Rotation
+        )
+        hrp.AssemblyLinearVelocity  = Vector3.zero
+        hrp.AssemblyAngularVelocity = Vector3.zero
+    end)
+end
+
+local function floatClone(cloneModel)
+    local hrp = cloneModel and cloneModel:FindFirstChild("HumanoidRootPart")
+    if not hrp then return end
+    local char       = player.Character
+    local playerRoot = char and char:FindFirstChild("HumanoidRootPart")
+    if not playerRoot then return end
+    pcall(function()
+        local pp       = playerRoot.Position
+        local currentY = hrp.Position.Y
+
+        if currentY >= CONFIG.FLOAT_Y_MAX_WORLD then
+            hrp.CFrame = CFrame.new(pp.X, CONFIG.FLOAT_Y_MAX_WORLD, pp.Z) * CFrame.Angles(math.rad(90), 0, 0)
+            hrp.AssemblyLinearVelocity  = Vector3.zero
+            hrp.AssemblyAngularVelocity = Vector3.zero
+        else
+            hrp.CFrame = CFrame.new(pp.X, currentY, pp.Z) * CFrame.Angles(math.rad(90), 0, 0)
+            hrp.AssemblyLinearVelocity  = Vector3.new(0, CONFIG.FLOAT_VELOCITY_UP, 0)
+            hrp.AssemblyAngularVelocity = Vector3.zero
+        end
+    end)
+end
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- CLONE AURA
+-- ─────────────────────────────────────────────────────────────────────────────
+local function startAura()
+    if STATE.auraConn then
+        STATE.auraConn:Disconnect()
+        STATE.auraConn = nil
+    end
+    STATE.auraAngle = 0
+
+    STATE.auraConn = SERVICES.RunService.Heartbeat:Connect(function(dt)
+        if not STATE.auraActive then
+            STATE.auraConn:Disconnect()
+            STATE.auraConn = nil
+            return
+        end
+        local clone = STATE.cloneModel
+        if not clone or not clone.Parent then return end
+        local hrp = clone:FindFirstChild("HumanoidRootPart")
+        if not hrp then return end
+        local char = player.Character
+        local root = char and char:FindFirstChild("HumanoidRootPart")
+        if not root then return end
+
+        -- CONFIG.AURA_SPEED = rotações por segundo, convertido para radianos/s
+        STATE.auraAngle = (STATE.auraAngle + CONFIG.AURA_SPEED * dt * math.pi * 2) % (math.pi * 2)
+
+        local r      = STATE.auraRadius
+        local center = root.Position
+        local x      = center.X + math.cos(STATE.auraAngle) * r
+        local z      = center.Z + math.sin(STATE.auraAngle) * r
+        local y      = center.Y
+
+        pcall(function()
+            hrp.CFrame = CFrame.new(x, y, z) * CFrame.Angles(0, -(STATE.auraAngle + math.pi / 2), 0)
+            hrp.AssemblyLinearVelocity  = Vector3.zero
+            hrp.AssemblyAngularVelocity = Vector3.zero
+        end)
+    end)
+end
+
+local function stopAura()
+    STATE.auraActive = false
+    if STATE.auraConn then
+        STATE.auraConn:Disconnect()
+        STATE.auraConn = nil
+    end
+end
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- SPAWN (SPAM)
+-- ─────────────────────────────────────────────────────────────────────────────
+local function startSpam()
+    if STATE.spamRunning then return end
+    STATE.spamRunning = true
+    STATE.spamStart   = tick()
+
+    STATE.spamConn = SERVICES.RunService.Heartbeat:Connect(function()
+        if not STATE.spamRunning then
+            if STATE.spamConn then
+                STATE.spamConn:Disconnect()
+                STATE.spamConn = nil
+            end
+            return
+        end
+        local char = player.Character
+        if not char then return end
+        -- Parar spam assim que o clone spawnar
+        if STATE.cloneModel and STATE.cloneModel.Parent then
+            STATE.spamRunning = false
+            STATE.spamConn:Disconnect()
+            STATE.spamConn = nil
+            return
+        end
+        if tick() - STATE.spamStart >= CONFIG.SPAM_TOTAL_DURATION then
+            STATE.spamRunning = false
+            STATE.spamConn:Disconnect()
+            STATE.spamConn = nil
+            return
+        end
+        local bat = getTool(char, "Bat")
+        if not bat then
+            STATE.spamRunning = false
+            STATE.spamConn:Disconnect()
+            STATE.spamConn = nil
+            return
+        end
+        local qc = getTool(char, "Quantum Cloner")
+        if qc then
+            qc.Parent = char
+            activateTool(qc)
+            qc.Parent = backpack
+        end
+        for _ = 1, CONFIG.BAT_CYCLES_PER_FRAME do
+            bat.Parent = char
+            bat.Parent = backpack
+        end
+    end)
+end
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- LOOP DO CLONE (float / teleport / aura)
+-- ─────────────────────────────────────────────────────────────────────────────
+local function startCloneLoop(cloneModel)
+    if STATE.tpConn then
+        STATE.tpConn:Disconnect()
+        STATE.tpConn = nil
+    end
+
+    local hum = cloneModel:FindFirstChild("Humanoid")
+    if hum then
+        task.spawn(function()
+            pcall(function()
+                hum:ChangeState(Enum.HumanoidStateType.Dead)
+            end)
+        end)
+    end
+
+    STATE.tpConn = SERVICES.RunService.Heartbeat:Connect(function()
+        if not cloneModel or not cloneModel.Parent then
+            STATE.tpConn:Disconnect()
+            STATE.tpConn     = nil
+            STATE.cloneModel = nil
+            stopTargetWorker()
+            return
+        end
+        local hr = cloneModel:FindFirstChild("HumanoidRootPart")
+        if not hr then
+            STATE.tpConn:Disconnect()
+            STATE.tpConn     = nil
+            STATE.cloneModel = nil
+            stopTargetWorker()
+            return
+        end
+        if STATE.floatActive then
+            floatClone(cloneModel)
+        elseif STATE.teleportActive then
+            local pos = STATE.targetCache.pos
+            if pos then
+                moveCloneToTarget(cloneModel, pos)
+            end
+        elseif STATE.auraActive then
+            -- aura é tratada no próprio startAura Heartbeat
+        else
+            pcall(function()
+                hr.AssemblyLinearVelocity  = Vector3.zero
+                hr.AssemblyAngularVelocity = Vector3.zero
+            end)
+        end
+    end)
+end
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- DETECTAR CLONE
+-- ─────────────────────────────────────────────────────────────────────────────
+local expectedName = ("%s_Clone"):format(player.UserId)
+
+local function attachClone(child)
+    STATE.spamRunning = false
+
+    task.wait(CONFIG.CLONE_APPEAR_GRACE_PERIOD)
+
+    local ok, cloneRoot = pcall(function()
+        return child:WaitForChild("HumanoidRootPart", CONFIG.ROOT_WAIT_TIMEOUT)
+    end)
+    if not ok or not cloneRoot then warn("[ClonePanel] Clone sem HumanoidRootPart") return end
+
+    if STATE.cloneConn then STATE.cloneConn:Disconnect() STATE.cloneConn = nil end
+    STATE.cloneModel = child
+
+    local char = player.Character
+    local bat  = getTool(char, "Bat")
+    if bat then
+        bat.Parent = char
+        bat.Parent = child
+        bat.Parent = player.Backpack
+        bat.Parent = child
+    end
+
+    task.wait(0.05)
+
+    if STATE.autoTpActive then
+        STATE.teleportActive = true
+        STATE.floatActive    = false
+        STATE.auraActive     = false
+        if STATE.onCloneReady then
+            STATE.onCloneReady()
+        end
+    end
+
+    if STATE.teleportActive then
+        startTargetWorker()
+    end
+
+    if STATE.auraActive then
+        startAura()
+    end
+
+    startCloneLoop(child)
+end
+
+local function listenForClone()
+    if STATE.cloneConn then
+        STATE.cloneConn:Disconnect()
+    end
+    STATE.cloneConn = workspace.ChildAdded:Connect(function(child)
+        if child.Name ~= expectedName then return end
+        task.spawn(attachClone, child)
+    end)
+end
+
+listenForClone()
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- AUTO TP LOOP
+-- ─────────────────────────────────────────────────────────────────────────────
+local function startAutoTpLoop()
+    if STATE.autoTpLoopConn then return end
+
+    STATE.autoTpLoopConn = SERVICES.RunService.Heartbeat:Connect(function()
+        if not STATE.autoTpActive then
+            STATE.autoTpLoopConn:Disconnect()
+            STATE.autoTpLoopConn = nil
+            return
+        end
+        if (not STATE.cloneModel or not STATE.cloneModel.Parent) and not STATE.spamRunning then
+            STATE.cloneModel = nil
+            listenForClone()
+            task.delay(CONFIG.AUTOCLONE_RESPAWN_DELAY, function()
+                if STATE.autoTpActive and not STATE.cloneModel and not STATE.spamRunning then
+                    startSpam()
+                end
+            end)
+            task.wait(CONFIG.AUTOCLONE_RESPAWN_DELAY + CONFIG.SPAM_TOTAL_DURATION + 1)
+        end
+    end)
+end
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- GUI
+-- ─────────────────────────────────────────────────────────────────────────────
+local function makeTween(obj, info, props)
+    return SERVICES.TweenService:Create(obj, info, props)
+end
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name            = "ClonePanelGui"
+screenGui.ResetOnSpawn    = false
+screenGui.ZIndexBehavior  = Enum.ZIndexBehavior.Sibling
+screenGui.IgnoreGuiInset  = true
+screenGui.Parent          = player.PlayerGui
+
+local shadow = Instance.new("Frame")
+shadow.Name                   = "Shadow"
+shadow.Size                   = UDim2.new(0, CONFIG.PANEL_W + 12, 0, CONFIG.PANEL_H + 12)
+shadow.Position               = UDim2.new(0, 24, 0.5, -(CONFIG.PANEL_H / 2) - 6)
+shadow.BackgroundColor3       = Color3.fromRGB(0, 0, 0)
+shadow.BackgroundTransparency = 0.6
+shadow.BorderSizePixel        = 0
+shadow.ZIndex                 = 1
+shadow.Parent                 = screenGui
+Instance.new("UICorner", shadow).CornerRadius = UDim.new(0, CONFIG.CORNER + 4)
+
+local panel = Instance.new("Frame")
+panel.Name             = "Panel"
+panel.Size             = UDim2.new(0, CONFIG.PANEL_W, 0, CONFIG.PANEL_H)
+panel.Position         = UDim2.new(0, 30, 0.5, -(CONFIG.PANEL_H / 2))
+panel.BackgroundColor3 = Color3.fromRGB(15, 15, 22)
+panel.BorderSizePixel  = 0
+panel.ZIndex           = 2
+panel.Active           = true
+panel.Parent           = screenGui
+
+local panelCorner = Instance.new("UICorner")
+panelCorner.CornerRadius = UDim.new(0, CONFIG.CORNER)
+panelCorner.Parent = panel
+
+local grad = Instance.new("UIGradient")
+grad.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(22, 22, 36)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(10, 10, 18)),
+})
+grad.Rotation = 90
+grad.Parent = panel
+
+local stroke = Instance.new("UIStroke")
+stroke.Color        = Color3.fromRGB(80, 60, 160)
+stroke.Thickness    = 1.5
+stroke.Transparency = 0.4
+stroke.Parent       = panel
+
+local titleBar = Instance.new("Frame")
+titleBar.Size                   = UDim2.new(1, 0, 0, 36)
+titleBar.Position               = UDim2.new(0, 0, 0, 0)
+titleBar.BackgroundColor3       = Color3.fromRGB(80, 60, 160)
+titleBar.BackgroundTransparency = 0.1
+titleBar.BorderSizePixel        = 0
+titleBar.ZIndex                 = 3
+titleBar.Parent                 = panel
+local titleCorner = Instance.new("UICorner")
+titleCorner.CornerRadius = UDim.new(0, CONFIG.CORNER)
+titleCorner.Parent = titleBar
+local titleFix = Instance.new("Frame")
+titleFix.Size                   = UDim2.new(1, 0, 0, CONFIG.CORNER)
+titleFix.Position               = UDim2.new(0, 0, 1, -CONFIG.CORNER)
+titleFix.BackgroundColor3       = Color3.fromRGB(80, 60, 160)
+titleFix.BackgroundTransparency = 0.1
+titleFix.BorderSizePixel        = 0
+titleFix.ZIndex                 = 3
+titleFix.Parent                 = titleBar
+
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Size                   = UDim2.new(1, 0, 1, 0)
+titleLabel.BackgroundTransparency = 1
+titleLabel.Text                   = "gato private"
+titleLabel.Font                   = Enum.Font.GothamBold
+titleLabel.TextSize               = 15
+titleLabel.TextColor3             = Color3.fromRGB(230, 220, 255)
+titleLabel.ZIndex                 = 4
+titleLabel.Parent                 = titleBar
+
+do
+    local dragging, dragStart, startPos
+    titleBar.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1
+            or input.UserInputType == Enum.UserInputType.Touch then
+            dragging  = true
+            dragStart = input.Position
+            startPos  = panel.Position
+        end
+    end)
+    titleBar.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1
+            or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = false
+        end
+    end)
+    SERVICES.UserInputService.InputChanged:Connect(function(input)
+        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement
+            or input.UserInputType == Enum.UserInputType.Touch) then
+            local delta = input.Position - dragStart
+            panel.Position = UDim2.new(
+                startPos.X.Scale, startPos.X.Offset + delta.X,
+                startPos.Y.Scale, startPos.Y.Offset + delta.Y
+            )
+            shadow.Position = UDim2.new(
+                startPos.X.Scale, startPos.X.Offset + delta.X - 6,
+                startPos.Y.Scale, startPos.Y.Offset + delta.Y - 6
+            )
+        end
+    end)
+end
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- FACTORY DE BOTÃO
+-- ─────────────────────────────────────────────────────────────────────────────
+local BTN_COLORS = {
+    spawn    = { off = Color3.fromRGB(40, 140, 80),   on = Color3.fromRGB(20, 80, 45)   },
+    float    = { off = Color3.fromRGB(60, 80, 200),   on = Color3.fromRGB(30, 50, 140)  },
+    teleport = { off = Color3.fromRGB(160, 60, 200),  on = Color3.fromRGB(90, 30, 130)  },
+    autotp   = { off = Color3.fromRGB(180, 100, 20),  on = Color3.fromRGB(220, 140, 0)  },
+    aura     = { off = Color3.fromRGB(180, 30, 100),  on = Color3.fromRGB(255, 60, 140) },
+}
+
+local function createButton(parent, yOffset, icon, label, colorKey)
+    local btn = Instance.new("TextButton")
+    btn.Size             = UDim2.new(1, -(CONFIG.PAD * 2), 0, CONFIG.BTN_H)
+    btn.Position         = UDim2.new(0, CONFIG.PAD, 0, yOffset)
+    btn.BackgroundColor3 = BTN_COLORS[colorKey].off
+    btn.BorderSizePixel  = 0
+    btn.Text             = ""
+    btn.AutoButtonColor  = false
+    btn.ZIndex           = 3
+    btn.Parent           = parent
+
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(0, 10)
+    corner.Parent = btn
+
+    local btnStroke = Instance.new("UIStroke")
+    btnStroke.Color        = Color3.fromRGB(255, 255, 255)
+    btnStroke.Transparency = 0.85
+    btnStroke.Thickness    = 1
+    btnStroke.Parent       = btn
+
+    local btnGrad = Instance.new("UIGradient")
+    btnGrad.Color = ColorSequence.new({
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255,255,255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(255,255,255)),
+    })
+    btnGrad.Transparency = NumberSequence.new({
+        NumberSequenceKeypoint.new(0, 0.85),
+        NumberSequenceKeypoint.new(1, 1),
+    })
+    btnGrad.Rotation = 90
+    btnGrad.Parent = btn
+
+    local iconL = Instance.new("TextLabel")
+    iconL.Size                   = UDim2.new(0, 36, 1, 0)
+    iconL.Position               = UDim2.new(0, 8, 0, 0)
+    iconL.BackgroundTransparency = 1
+    iconL.Text                   = icon
+    iconL.Font                   = Enum.Font.GothamBold
+    iconL.TextSize               = 22
+    iconL.TextColor3             = Color3.fromRGB(255, 255, 255)
+    iconL.ZIndex                 = 4
+    iconL.Parent                 = btn
+
+    local textL = Instance.new("TextLabel")
+    textL.Size                   = UDim2.new(1, -52, 1, 0)
+    textL.Position               = UDim2.new(0, 48, 0, 0)
+    textL.BackgroundTransparency = 1
+    textL.Text                   = label
+    textL.Font                   = Enum.Font.GothamBold
+    textL.TextSize               = 13
+    textL.TextXAlignment         = Enum.TextXAlignment.Left
+    textL.TextColor3             = Color3.fromRGB(230, 230, 255)
+    textL.ZIndex                 = 4
+    textL.Parent                 = btn
+
+    local dot = Instance.new("Frame")
+    dot.Size             = UDim2.new(0, 8, 0, 8)
+    dot.Position         = UDim2.new(1, -18, 0.5, -4)
+    dot.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+    dot.BorderSizePixel  = 0
+    dot.ZIndex           = 4
+    dot.Parent           = btn
+    Instance.new("UICorner", dot).CornerRadius = UDim.new(1, 0)
+
+    local tweenInfo = TweenInfo.new(0.12, Enum.EasingStyle.Quad)
+    btn.MouseEnter:Connect(function()
+        makeTween(btn, tweenInfo, { BackgroundTransparency = 0.15 }):Play()
+    end)
+    btn.MouseLeave:Connect(function()
+        makeTween(btn, tweenInfo, { BackgroundTransparency = 0 }):Play()
+    end)
+
+    return btn, textL, dot
+end
+
+local Y1 = 36 + CONFIG.BTN_GAP
+local Y2 = Y1 + CONFIG.BTN_H + CONFIG.BTN_GAP
+local Y3 = Y2 + CONFIG.BTN_H + CONFIG.BTN_GAP
+local Y4 = Y3 + CONFIG.BTN_H + CONFIG.BTN_GAP
+local Y5 = Y4 + CONFIG.BTN_H + CONFIG.BTN_GAP
+
+local btnSpawn,    lblSpawn,    dotSpawn    = createButton(panel, Y1, "🐣", "Spawnar Clone",    "spawn")
+local btnFloat,    lblFloat,    dotFloat    = createButton(panel, Y2, "🌊", "Float Clone",       "float")
+local btnTeleport, lblTeleport, dotTeleport = createButton(panel, Y3, "🎯", "Teleportar Clone", "teleport")
+local btnAutoTp,   lblAutoTp,   dotAutoTp   = createButton(panel, Y4, "🔁", "Auto TP",          "autotp")
+local btnAura,     lblAura,     dotAura     = createButton(panel, Y5, "🌀", "Clone Aura",        "aura")
+
+-- Input de raio (abaixo do botão Aura)
+local radiusY = Y5 + CONFIG.BTN_H + 6
+
+local radiusLabel = Instance.new("TextLabel")
+radiusLabel.Size                   = UDim2.new(0, 52, 0, 22)
+radiusLabel.Position               = UDim2.new(0, CONFIG.PAD, 0, radiusY)
+radiusLabel.BackgroundTransparency = 1
+radiusLabel.Text                   = "Raio:"
+radiusLabel.Font                   = Enum.Font.GothamBold
+radiusLabel.TextSize               = 12
+radiusLabel.TextXAlignment         = Enum.TextXAlignment.Left
+radiusLabel.TextColor3             = Color3.fromRGB(200, 180, 255)
+radiusLabel.ZIndex                 = 4
+radiusLabel.Parent                 = panel
+
+local radiusBox = Instance.new("TextBox")
+radiusBox.Size              = UDim2.new(0, 72, 0, 22)
+radiusBox.Position          = UDim2.new(0, CONFIG.PAD + 54, 0, radiusY)
+radiusBox.BackgroundColor3  = Color3.fromRGB(28, 28, 46)
+radiusBox.BorderSizePixel   = 0
+radiusBox.Text              = tostring(CONFIG.AURA_RADIUS)
+radiusBox.Font              = Enum.Font.GothamBold
+radiusBox.TextSize          = 12
+radiusBox.TextColor3        = Color3.fromRGB(230, 230, 255)
+radiusBox.PlaceholderText   = "studs"
+radiusBox.ZIndex            = 4
+radiusBox.Parent            = panel
+Instance.new("UICorner", radiusBox).CornerRadius = UDim.new(0, 6)
+local radiusStroke = Instance.new("UIStroke")
+radiusStroke.Color        = Color3.fromRGB(180, 60, 140)
+radiusStroke.Thickness    = 1
+radiusStroke.Transparency = 0.5
+radiusStroke.Parent       = radiusBox
+
+radiusBox.FocusLost:Connect(function()
+    local n = tonumber(radiusBox.Text)
+    if n and n > 0 then
+        STATE.auraRadius = n
+    else
+        radiusBox.Text = tostring(STATE.auraRadius)
+    end
+end)
+
+local function setDot(dot, active)
+    dot.BackgroundColor3 = active
+        and Color3.fromRGB(80, 255, 120)
+        or  Color3.fromRGB(80, 80, 80)
+end
+
+-- ─────────────────────────────────────────────────────────────────────────────
+-- LÓGICA DOS BOTÕES
+-- ─────────────────────────────────────────────────────────────────────────────
+
+-- SPAWN
+btnSpawn.MouseButton1Click:Connect(function()
+    if STATE.spamRunning then return end
+    lblSpawn.Text = "Spawnando..."
+    dotSpawn.BackgroundColor3 = Color3.fromRGB(255, 200, 0)
+
+    if not STATE.cloneModel or not STATE.cloneModel.Parent then
+        STATE.cloneModel = nil
+        listenForClone()
+    end
+
+    startSpam()
+
+    task.delay(CONFIG.SPAM_TOTAL_DURATION + 0.5, function()
+        if lblSpawn.Text == "Spawnando..." then
+            lblSpawn.Text = "Spawnar Clone"
+            setDot(dotSpawn, false)
+        end
+    end)
+end)
+
+-- FLOAT
+btnFloat.MouseButton1Click:Connect(function()
+    STATE.floatActive    = not STATE.floatActive
+    STATE.teleportActive = false
+    STATE.auraActive     = false
+    stopAura()
+
+    setDot(dotFloat,    STATE.floatActive)
+    setDot(dotTeleport, false)
+    setDot(dotAura,     false)
+
+    btnFloat.BackgroundColor3    = STATE.floatActive and BTN_COLORS.float.on    or BTN_COLORS.float.off
+    btnTeleport.BackgroundColor3 = BTN_COLORS.teleport.off
+    btnAura.BackgroundColor3     = BTN_COLORS.aura.off
+
+    lblFloat.Text    = STATE.floatActive and "Float: ATIVO" or "Float Clone"
+    lblTeleport.Text = "Teleportar Clone"
+    lblAura.Text     = "Clone Aura"
+
+    if STATE.cloneModel and not STATE.tpConn then
+        startCloneLoop(STATE.cloneModel)
+    end
+end)
+
+-- TELEPORT
+btnTeleport.MouseButton1Click:Connect(function()
+    STATE.teleportActive = not STATE.teleportActive
+    STATE.floatActive    = false
+    STATE.auraActive     = false
+    stopAura()
+
+    setDot(dotTeleport, STATE.teleportActive)
+    setDot(dotFloat,    false)
+    setDot(dotAura,     false)
+
+    btnTeleport.BackgroundColor3 = STATE.teleportActive and BTN_COLORS.teleport.on or BTN_COLORS.teleport.off
+    btnFloat.BackgroundColor3    = BTN_COLORS.float.off
+    btnAura.BackgroundColor3     = BTN_COLORS.aura.off
+
+    lblTeleport.Text = STATE.teleportActive and "Teleporte: ATIVO" or "Teleportar Clone"
+    lblFloat.Text    = "Float Clone"
+    lblAura.Text     = "Clone Aura"
+
+    if STATE.teleportActive then
+        startTargetWorker()
+    else
+        stopTargetWorker()
+    end
+
+    if STATE.cloneModel and not STATE.tpConn then
+        startCloneLoop(STATE.cloneModel)
+    end
+end)
+
+-- AUTO TP
+btnAutoTp.MouseButton1Click:Connect(function()
+    STATE.autoTpActive = not STATE.autoTpActive
+    saveState()
+
+    setDot(dotAutoTp, STATE.autoTpActive)
+    btnAutoTp.BackgroundColor3 = STATE.autoTpActive and BTN_COLORS.autotp.on or BTN_COLORS.autotp.off
+    lblAutoTp.Text = STATE.autoTpActive and "Auto TP: ATIVO" or "Auto TP"
+
+    if STATE.autoTpActive then
+        STATE.teleportActive = false
+        STATE.floatActive    = false
+        STATE.auraActive     = false
+        stopAura()
+
+        STATE.onCloneReady = function()
+            setDot(dotTeleport, true)
+            setDot(dotFloat,    false)
+            setDot(dotAura,     false)
+            btnTeleport.BackgroundColor3 = BTN_COLORS.teleport.on
+            btnFloat.BackgroundColor3    = BTN_COLORS.float.off
+            btnAura.BackgroundColor3     = BTN_COLORS.aura.off
+            lblTeleport.Text = "Teleporte: ATIVO"
+            lblFloat.Text    = "Float Clone"
+            lblAura.Text     = "Clone Aura"
+            lblAutoTp.Text   = "Auto TP: ATIVO"
+        end
+
+        startAutoTpLoop()
+
+        if not STATE.cloneModel or not STATE.cloneModel.Parent then
+            STATE.cloneModel = nil
+            listenForClone()
+            startSpam()
+            lblAutoTp.Text = "Auto TP: Spawnando..."
+        end
+    else
+        STATE.onCloneReady = nil
+        if STATE.autoTpLoopConn then
+            STATE.autoTpLoopConn:Disconnect()
+            STATE.autoTpLoopConn = nil
+        end
+    end
+end)
+
+-- CLONE AURA
+btnAura.MouseButton1Click:Connect(function()
+    STATE.auraActive     = not STATE.auraActive
+    STATE.floatActive    = false
+    STATE.teleportActive = false
+    stopTargetWorker()
+
+    setDot(dotAura,     STATE.auraActive)
+    setDot(dotFloat,    false)
+    setDot(dotTeleport, false)
+
+    btnAura.BackgroundColor3     = STATE.auraActive and BTN_COLORS.aura.on     or BTN_COLORS.aura.off
+    btnFloat.BackgroundColor3    = BTN_COLORS.float.off
+    btnTeleport.BackgroundColor3 = BTN_COLORS.teleport.off
+
+    lblAura.Text     = STATE.auraActive and "Aura: ATIVA" or "Clone Aura"
+    lblFloat.Text    = "Float Clone"
+    lblTeleport.Text = "Teleportar Clone"
+
+    if STATE.auraActive then
+        if STATE.cloneModel and STATE.cloneModel.Parent then
+            startAura()
+        end
+    else
+        stopAura()
+    end
+end)
+
+-- Aplica estado carregado do arquivo na GUI
+if STATE.autoTpActive then
+    setDot(dotAutoTp, true)
+    btnAutoTp.BackgroundColor3 = BTN_COLORS.autotp.on
+    lblAutoTp.Text             = "Auto TP: Spawnando..."
+
+    STATE.onCloneReady = function()
+        setDot(dotTeleport, true)
+        setDot(dotFloat,    false)
+        setDot(dotAura,     false)
+        btnTeleport.BackgroundColor3 = BTN_COLORS.teleport.on
+        btnFloat.BackgroundColor3    = BTN_COLORS.float.off
+        btnAura.BackgroundColor3     = BTN_COLORS.aura.off
+        lblTeleport.Text = "Teleporte: ATIVO"
+        lblFloat.Text    = "Float Clone"
+        lblAura.Text     = "Clone Aura"
+        lblAutoTp.Text   = "Auto TP: ATIVO"
+    end
+
+    startAutoTpLoop()
+    if not STATE.cloneModel or not STATE.cloneModel.Parent then
+        listenForClone()
+        startSpam()
+    end
+end
+wait(3)
+local SERVICES = {
+    ReplicatedStorage = game:GetService("ReplicatedStorage"),
+    RunService = game:GetService("RunService"),
+}
+
+local CONFIG = {
+    ChannelTimeout = 10,
+    BestPetSpecialIndex = "Coffin Tung Tung Tung Sahur",
+}
+
+local Packages = SERVICES.ReplicatedStorage:WaitForChild("Packages")
+local UtilsFolder = SERVICES.ReplicatedStorage:WaitForChild("Utils")
+local SharedFolder = SERVICES.ReplicatedStorage:WaitForChild("Shared")
+local DataFolder = SERVICES.ReplicatedStorage:WaitForChild("Datas")
+
+local NumberUtils = require(UtilsFolder.NumberUtils)
+local AnimalsShared = require(SharedFolder.Animals)
+local AnimalsData = require(DataFolder.Animals)
+local SynchronizerModule = require(Packages.Synchronizer)
+
+local Plots = workspace:FindFirstChild("Plots")
+
+local function SafeGetChannel(channelIndex)
+    local allChannels = SynchronizerModule:GetAllChannels()
+    if allChannels[channelIndex] then
+        return allChannels[channelIndex]
+    end
+    return SynchronizerModule:Create(nil, channelIndex, nil)
+end
+
+local function SafeWaitChannel(channelIndex)
+    local channel = SafeGetChannel(channelIndex)
+    if channel then return channel end
+    local startTime = tick()
+    while not channel and tick() - startTime <= CONFIG.ChannelTimeout do
+        task.wait(0.01)
+        channel = SafeGetChannel(channelIndex)
+    end
+    if not channel then
+        warn("[TIMEOUT] Canal não encontrado:", channelIndex)
+        return nil
+    end
+    return channel
+end
+
+local function GetGeneration(index, mutation, traits)
+    if index == CONFIG.BestPetSpecialIndex then return 0 end
+    local ok, gen = pcall(function()
+        return AnimalsShared:GetGeneration(index, mutation, traits, nil)
+    end)
+    if ok and type(gen) == "number" then return gen end
+    return 0
+end
+
+local function GetBestPet()
+    if not Plots then return nil, nil end
+    local best, bestGen, bestPlot = nil, -math.huge, nil
+    local plotsList = Plots:GetChildren()
+    for i = 1, #plotsList do
+        local plot = plotsList[i]
+        if plot:IsA("Model") and plot:GetAttribute("Tier") then
+            local channel = SafeGetChannel(plot.Name)
+            if channel then
+                local animalList = channel:Get("AnimalList") or {}
+                for j = 1, #animalList do
+                    local entry = animalList[j]
+                    if type(entry) == "table" and entry.Index and entry ~= "Empty" then
+                        local gen = GetGeneration(entry.Index, entry.Mutation, entry.Traits)
+                        if gen > bestGen then
+                            bestGen = gen
+                            best = entry
+                            bestPlot = plot
+                        end
+                    end
+                end
+            end
+        end
+    end
+    return best, bestPlot
+end
+
+local function FireConnections(event, ...)
+    local ok, connections = pcall(getconnections, event)
+    if not ok or not connections then return end
+    local args = { ... }
+    for _, conn in connections do
+        if conn and conn.Function then
+            task.spawn(conn.Function, table.unpack(args))
+        end
+    end
+end
+
+local function PreparePrompt(prompt)
+    prompt.Enabled = true
+    prompt.MaxActivationDistance = 1e10
+    prompt.RequiresLineOfSight = false
+    prompt.UIOffset = Vector2.new(0, 0)
+end
+
+local bestEntry, bestPlot = GetBestPet()
+
+if not bestEntry or not bestPlot then
+    warn("[ERRO] Nenhum pet encontrado.")
+else
+    local data = AnimalsData[bestEntry.Index]
+    local displayName = (data and data.DisplayName) or bestEntry.Index
+    local genValue = GetGeneration(bestEntry.Index, bestEntry.Mutation, bestEntry.Traits)
+
+    print("[MELHOR PET] " .. displayName .. " | $" .. NumberUtils:ToString(genValue) .. "/s")
+    print("[INDEX] " .. tostring(bestEntry.Index))
+    print("[PLOT] " .. bestPlot.Name)
+
+    local prompt = nil
+    for _, desc in bestPlot:GetDescendants() do
+        if desc:IsA("ProximityPrompt") and desc.ObjectText == displayName then
+            prompt = desc
+            break
+        end
+    end
+
+    if prompt then
+        print("[PROMPT ENCONTRADO] " .. prompt:GetFullName())
+        PreparePrompt(prompt)
+
+        SERVICES.RunService.Heartbeat:Connect(function()
+            FireConnections(prompt.Triggered)
+        end)
+    else
+        warn("[ERRO] Nenhum ProximityPrompt com ObjectText '" .. displayName .. "' encontrado no plot:", bestPlot.Name)
+    end
+end
